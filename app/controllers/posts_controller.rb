@@ -8,11 +8,18 @@ class PostsController < ApplicationController
 
   def update
     post = Post.find(params[:id])
-
-    post.update(post_params)
-
+    post.update!(post_params)
     render json: post
+  rescue ActiveRecord::RecordInvalid => invalid
+    render json: {errors: invalid.record.errors}, status: :unprocessable_entity
   end
+
+  # def create
+  #   author = Author.create!(author_params)
+  #   render json: author, status: :created
+  # rescue ActiveRecord::RecordInvalid => invalid 
+  #   render json: {errors: invalid.record.errors}, status: :unprocessable_entity
+  # end
 
   private
 
